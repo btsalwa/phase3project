@@ -1,6 +1,7 @@
 from models.cars import carStore, Customer
 from tqdm import tqdm
 
+
 def main():
     # Create an object of class CarStore
     store = carStore(100)

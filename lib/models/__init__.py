@@ -3,6 +3,7 @@ import sqlite3
 CONN = sqlite3.connect('main.db')
 CURSOR = CONN.cursor()
 
+
 CURSOR.execute("""
 CREATE TABLE IF NOT EXISTS carStore (
     car_id INTEGER PRIMARY KEY AUTOINCREMENT,
