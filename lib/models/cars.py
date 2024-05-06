@@ -52,11 +52,14 @@ class carStore:
 
     @classmethod
     def create(cls, car_id, carType, available_cars, cars_rented):
-        CURSOR.execute("""
-            INSERT INTO carStore (car_id, carType, available_cars, cars_rented)
-            VALUES (?, ?, ?, ?)
-        """, (car_id, carType, available_cars, cars_rented))
-        CONN.commit()
+        try:
+            CURSOR.execute("""
+                INSERT INTO carStore (car_id, carType, available_cars, cars_rented)
+                VALUES (?, ?, ?, ?)
+            """, (car_id, carType, available_cars, cars_rented))
+            CONN.commit()
+        except sqlite3.IntegrityError as e:
+            print(f"Error: {e}. Failed to insert record with car_id: {car_id}.")
 
     @classmethod
     def delete(cls, car_id):
@@ -106,9 +109,10 @@ class Customer:
 
     @car_rented.setter
     def car_rented(self, value):
-        if not isinstance(value, CarStore):
-            raise ValueError("car_rented must be a CarStore object")
+        if not isinstance(value, carStore):
+            raise ValueError("car_rented must be a carStore object")
         self._car_rented = value
+
 
     @property
     def carTypeid(self):
@@ -152,11 +156,15 @@ class Customer:
 
     @classmethod
     def create(cls, cust_id, car_rented, carTypeid, rentType, rentPeriod, invoice):
-        CURSOR.execute("""
-            INSERT INTO Customer (cust_id, car_rented, carTypeid, rentType, rentPeriod, invoice)
-            VALUES (?, ?, ?, ?, ?, ?)
-        """, (cust_id, car_rented, carTypeid, rentType, rentPeriod, invoice))
-        CONN.commit()
+        try:
+            CURSOR.execute("""
+                INSERT INTO Customer (cust_id, car_rented, carTypeid, rentType, rentPeriod, invoice)
+                VALUES (?, ?, ?, ?, ?, ?)
+            """, (cust_id, car_rented, carTypeid, rentType, rentPeriod, invoice))
+            CONN.commit()
+        except sqlite3.IntegrityError as e:
+            print(f"Error: {e}. Failed to insert record with cust_id: {cust_id}.")
+
 
     @classmethod
     def delete(cls, cust_id):
