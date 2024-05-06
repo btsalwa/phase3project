@@ -4,7 +4,7 @@ from tqdm import tqdm
 
 def main():
     # Create an object of class CarStore
-    store = carStore(100)
+    store = carStore(1, 'sedan', 10, 0)
     # Create an object of class Customer
     cust = Customer(101)
 

@@ -1,11 +1,10 @@
 import sqlite3
 
-
 CONN = sqlite3.connect('main.db')
 CURSOR = CONN.cursor()
 
 class carStore:
-    def __init__(self, car_id, carType, available_cars, cars_rented):
+    def __init__(self, car_id, carType="", available_cars=0, cars_rented=0):
         self.car_id = car_id
         self.carType = carType
         self.available_cars = available_cars
@@ -86,7 +85,7 @@ class carStore:
         return CURSOR.fetchone()
 
 class Customer:
-    def __init__(self, cust_id, car_rented, carTypeid, rentType, rentPeriod, invoice):
+    def __init__(self, cust_id, car_rented=None, carTypeid=0, rentType=0, rentPeriod=0, invoice=0.0):
         self.cust_id = cust_id
         self.car_rented = car_rented
         self.carTypeid = carTypeid
@@ -110,10 +109,9 @@ class Customer:
 
     @car_rented.setter
     def car_rented(self, value):
-        if not isinstance(value, carStore):
-            raise ValueError("car_rented must be a carStore object")
+        if value is not None and not isinstance(value, carStore):
+            raise ValueError("car_rented must be a carStore object or None")
         self._car_rented = value
-
 
     @property
     def carTypeid(self):
@@ -165,7 +163,6 @@ class Customer:
             CONN.commit()
         except sqlite3.IntegrityError as e:
             print(f"Error: {e}. Failed to insert record with cust_id: {cust_id}.")
-
 
     @classmethod
     def delete(cls, cust_id):
